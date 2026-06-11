@@ -1,0 +1,59 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "products"
+    label: "Products"
+    folder: "_products"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Product Name", name: "title", widget: "string"}
+      - {label: "Price (€)", name: "price", widget: "string"}
+      - {label: "Price Note", name: "price_note", widget: "string", required: false}
+      - {label: "Available", name: "available", widget: "select", options: ["In Stock", "Order Only", "Out of Stock"]}
+      - {label: "Main Image", name: "main_image", widget: "image"}
+      - label: "Gallery Images"
+        name: "gallery"
+        widget: "list"
+        field: {label: "Image", name: "image", widget: "image"}
+      - label: "Specifications"
+        name: "specs"
+        widget: "list"
+        fields:
+          - {label: "Spec Name (EN)", name: "key_en", widget: "string"}
+          - {label: "Spec Name (GR)", name: "key_el", widget: "string"}
+          - {label: "Value", name: "value", widget: "string"}
+      - {label: "Description (EN)", name: "description_en", widget: "text", required: false}
+      - {label: "Description (GR)", name: "description_el", widget: "text", required: false}
+
+  - name: "reviews"
+    label: "Customer Reviews"
+    folder: "_reviews"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Customer Name", name: "name", widget: "string"}
+      - {label: "Location", name: "location", widget: "string", required: false}
+      - {label: "Product", name: "product", widget: "string"}
+      - {label: "Rating", name: "rating", widget: "select", options: ["5", "4", "3"]}
+      - {label: "Review (EN)", name: "review_en", widget: "text"}
+      - {label: "Review (GR)", name: "review_el", widget: "text", required: false}
+      - {label: "Approved", name: "approved", widget: "boolean", default: false}
+
+  - name: "settings"
+    label: "Site Settings"
+    files:
+      - label: "General Settings"
+        name: "general"
+        file: "_data/settings.yml"
+        fields:
+          - {label: "Phone", name: "phone", widget: "string"}
+          - {label: "WhatsApp Number", name: "whatsapp", widget: "string"}
+          - {label: "Facebook URL", name: "facebook", widget: "string"}
+          - {label: "TikTok URL", name: "tiktok", widget: "string"}
+          - {label: "Address", name: "address", widget: "string"}
