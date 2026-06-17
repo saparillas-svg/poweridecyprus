@@ -1,0 +1,73 @@
+---
+layout: base
+title: "Poweride Cyprus — Electric Bikes & Scooters | Limassol"
+description: "Poweride Cyprus — Premium electric bikes and scooters. VOMO X80 Ultra from €1.100, Kukirin scooters from €599. Free delivery across Cyprus."
+extraCss: |
+  <style>
+  .hero{min-height:90vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8rem 2rem 4rem;position:relative;overflow:hidden}
+  .hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 50%,#1a0808 0%,#0a0a0a 70%)}
+  .hero-content{position:relative;z-index:1;max-width:800px}
+  .hero-tag{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--red);border:1px solid var(--red);padding:0.3rem 0.9rem;margin-bottom:1.5rem}
+  .hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,12vw,9rem);line-height:0.95;letter-spacing:0.04em;margin-bottom:1.5rem}
+  .hero-title span{color:var(--red)}
+  .hero-sub{color:var(--muted);font-size:1.1rem;line-height:1.7;margin-bottom:2.5rem}
+  .hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+  .models-section{padding:6rem 2rem;max-width:1300px;margin:0 auto}
+  .models-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
+  .model-card{background:var(--gray);border:1px solid #222;border-radius:4px;overflow:hidden;transition:border-color 0.2s,transform 0.2s;position:relative;text-decoration:none;color:inherit;display:block}
+  .model-card:hover{border-color:var(--red);transform:translateY(-4px)}
+  .card-badge{position:absolute;top:0.8rem;left:0.8rem;z-index:2;font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.25rem 0.7rem;border-radius:2px}
+  .card-img{aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#111}
+  .card-img img{width:90%;height:90%;object-fit:contain;transition:transform 0.4s}
+  .model-card:hover .card-img img{transform:scale(1.05)}
+  .card-body{padding:1.5rem}
+  .card-name{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.05em;line-height:1}
+  .card-tag{font-family:'Barlow Condensed',sans-serif;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin:0.3rem 0 1rem}
+  .card-footer{display:flex;align-items:flex-end;justify-content:space-between;padding-top:1rem;border-top:1px solid #222}
+  .card-price{font-family:'Bebas Neue',sans-serif;font-size:2rem;line-height:1}
+  .card-price span{color:var(--red);font-size:1.2rem}
+  @media(max-width:900px){.models-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:600px){.models-grid{grid-template-columns:1fr}}
+  </style>
+---
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-tag">⚡ Electric Bikes & Scooters — Cyprus</div>
+    <h1 class="hero-title">RIDE THE<br><span>FUTURE</span></h1>
+    <p class="hero-sub">Premium electric bikes and scooters. Based in Limassol, delivering across Cyprus. Free delivery · 1-year warranty.</p>
+    <div class="hero-btns">
+      <a href="#models" class="btn-primary">View All Models</a>
+      <a href="/contact/" class="btn-outline">Contact Us</a>
+    </div>
+  </div>
+</section>
+
+<section class="models-section" id="models">
+  <div class="section-label">Our Models</div>
+  <div class="section-title">CHOOSE YOUR RIDE</div>
+  <div class="models-grid">
+    {% for product in collections.products %}
+    <a href="{{ product.url }}" class="model-card">
+      {% if product.data.availability == "Order Only" %}
+      <div class="card-badge" style="background:var(--accent);color:#111;">📦 Order Only</div>
+      {% elsif product.data.availability == "Out of Stock" %}
+      <div class="card-badge" style="background:#444;color:white;">❌ Out of Stock</div>
+      {% else %}
+      <div class="card-badge" style="background:var(--red);color:white;">✅ In Stock</div>
+      {% endif %}
+      <div class="card-img">
+        <img src="{{ product.data.main_image }}" alt="{{ product.data.title }}" loading="lazy"/>
+      </div>
+      <div class="card-body">
+        <div class="card-name">{{ product.data.title }}</div>
+        <div class="card-tag">{{ product.data.tagline }}</div>
+        <div class="card-footer">
+          <div class="card-price"><span>€</span>{{ product.data.price }}</div>
+          <span class="btn-primary" style="padding:0.6rem 1.2rem;font-size:0.8rem;">View →</span>
+        </div>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</section>

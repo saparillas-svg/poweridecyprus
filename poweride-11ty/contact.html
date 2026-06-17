@@ -1,0 +1,172 @@
+---
+layout: base
+title: "Contact Us | Poweride Cyprus"
+description: "Contact Poweride Cyprus — WhatsApp, phone or contact form."
+permalink: /contact/
+extraCss: |
+  <style>
+    .page-hero { background: linear-gradient(135deg, #0a1a0a 0%, #0a0a0a 100%); padding: 5rem 2rem; text-align: center; }
+    .page-hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 8vw, 6rem); letter-spacing: 0.05em; }
+    .contact-section { max-width: 1100px; margin: 0 auto; padding: 5rem 2rem; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem; }
+    .contact-info-card { background: var(--gray); border: 1px solid #222; border-radius: 4px; padding: 2.5rem; margin-bottom: 1.5rem; display: flex; align-items: flex-start; gap: 1.2rem; }
+    .contact-icon { font-size: 2rem; flex-shrink: 0; }
+    .contact-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.3rem; }
+    .contact-value { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 0.05em; }
+    .contact-value a { color: var(--white); text-decoration: none; }
+    .contact-value a:hover { color: var(--red); }
+    .contact-form { background: #111; border: 1px solid #222; border-radius: 4px; padding: 2.5rem; }
+    .form-title { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; margin-bottom: 1.5rem; }
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label { display: block; font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; background: #1a1a1a; border: 1px solid #333; color: var(--white);
+      padding: 0.9rem 1.2rem; border-radius: 2px; font-family: 'Barlow', sans-serif;
+      font-size: 0.95rem; outline: none; transition: border-color 0.2s; resize: none;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--red); }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: #555; }
+    .form-group select option { background: #1a1a1a; }
+    .honeypot { display: none; }
+    .form-success { display: none; background: #0a2a0a; border: 1px solid #25D366; border-radius: 2px; padding: 1rem; text-align: center; color: #25D366; font-family: 'Barlow Condensed', sans-serif; letter-spacing: 0.1em; margin-top: 1rem; }
+    .social-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin-top: 2rem; }
+    .social-card { background: var(--gray); border: 1px solid #222; border-radius: 4px; padding: 1.5rem; text-align: center; text-decoration: none; color: var(--white); transition: border-color 0.2s, transform 0.2s; }
+    .social-card:hover { border-color: var(--red); transform: translateY(-3px); }
+    .social-card .s-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+    .social-card .s-name { font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+    @media(max-width:768px) { .contact-grid { grid-template-columns: 1fr; } .social-grid { grid-template-columns: 1fr; } }
+  </style>
+---
+
+
+<div class="page-hero">
+  <div class="section-label"><span class="en">Get In Touch</span><span class="el">Επικοινωνήστε</span></div>
+  <h1><span class="en">CONTACT US</span><span class="el">ΕΠΙΚΟΙΝΩΝΙΑ</span></h1>
+  <p class="en">We are based in Limassol, Cyprus. Reach us via WhatsApp, phone or the form below.</p>
+  <p class="el">Βρισκόμαστε στη Λεμεσό, Κύπρος. Επικοινωνήστε μέσω WhatsApp, τηλεφώνου ή φόρμας.</p>
+</div>
+
+<div class="contact-section">
+  <div class="contact-grid">
+    <div>
+      <div class="contact-info-card">
+        <div class="contact-icon">📞</div>
+        <div>
+          <div class="contact-label"><span class="en">Phone</span><span class="el">Τηλέφωνο</span></div>
+          <div class="contact-value"><a href="tel:+35799427117">+357 99 427 117</a></div>
+        </div>
+      </div>
+      <div class="contact-info-card">
+        <div class="contact-icon">💬</div>
+        <div>
+          <div class="contact-label">WhatsApp</div>
+          <div class="contact-value"><a href="https://wa.me/35799427117" target="_blank">+357 99 427 117</a></div>
+        </div>
+      </div>
+      <div class="contact-info-card">
+        <div class="contact-icon">📍</div>
+        <div>
+          <div class="contact-label"><span class="en">Location</span><span class="el">Τοποθεσία</span></div>
+          <div class="contact-value">Limassol, Cyprus</div>
+        </div>
+      </div>
+      <div class="contact-info-card">
+        <div class="contact-icon">🕐</div>
+        <div>
+          <div class="contact-label"><span class="en">Hours</span><span class="el">Ώρες</span></div>
+          <div class="contact-value" style="font-size:1rem; font-family:'Barlow',sans-serif;">
+            <span class="en">Mon–Sat: 9am – 7pm</span><span class="el">Δευ–Σαβ: 9πμ – 7μμ</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label" style="margin-top:2rem;margin-bottom:1rem;"><span class="en">Follow Us</span><span class="el">Ακολουθήστε μας</span></div>
+      <div class="social-grid">
+        <a class="social-card" href="https://www.facebook.com/ebikecy" target="_blank">
+          <div class="s-icon" style="color:#1877F2;">📘</div>
+          <div class="s-name">Facebook</div>
+        </a>
+        <a class="social-card" href="https://www.tiktok.com/@ebikes.cy" target="_blank">
+          <div class="s-icon">🎵</div>
+          <div class="s-name">TikTok</div>
+        </a>
+        <a class="social-card" href="https://wa.me/35799427117" target="_blank">
+          <div class="s-icon" style="color:#25D366;">💬</div>
+          <div class="s-name">WhatsApp</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="contact-form">
+      <div class="form-title"><span class="en">SEND A MESSAGE</span><span class="el">ΣΤΕΙΛΤΕ ΜΗΝΥΜΑ</span></div>
+      <form id="contactForm" onsubmit="submitForm(event)">
+        <input type="text" name="honeypot" class="honeypot" tabindex="-1" autocomplete="off"/>
+        <div class="form-group">
+          <label><span class="en">Full Name *</span><span class="el">Ονοματεπώνυμο *</span></label>
+          <input type="text" name="name" id="fname" placeholder="Andreas Papadopoulos" required/>
+        </div>
+        <div class="form-group">
+          <label><span class="en">Phone *</span><span class="el">Τηλέφωνο *</span></label>
+          <input type="tel" name="phone" id="fphone" placeholder="+357 99 000 000" required/>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" name="email" id="femail" placeholder="email@example.com"/>
+        </div>
+        <div class="form-group">
+          <label><span class="en">Interested In</span><span class="el">Ενδιαφέρεστε για</span></label>
+          <select name="model" id="fmodel">
+            <option value="">-- Select Model --</option>
+            <optgroup label="E-Bike">
+              <option>VOMO X80 Ultra — 1 Battery (€1.100)</option>
+              <option>VOMO X80 Ultra — 2 Batteries 18.3Ah (€1.400)</option>
+            </optgroup>
+            <optgroup label="Kukirin Scooters">
+              <option>Kukirin G2 (€599)</option>
+              <option>Kukirin G2 Pro (€649)</option>
+              <option>Kukirin G2 Max (€849)</option>
+              <option>Kukirin G4 (€949)</option>
+              <option>Kukirin G4 Max (€1.999)</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="form-group">
+          <label><span class="en">Message</span><span class="el">Μήνυμα</span></label>
+          <textarea name="message" id="fmsg" rows="4" placeholder="..."></textarea>
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%;">
+          <span class="en">Send via WhatsApp →</span><span class="el">Αποστολή μέσω WhatsApp →</span>
+        </button>
+        <div style="margin-top:0.8rem;">
+          <button type="button" class="btn-outline" style="width:100%;" onclick="callUs()">
+            📞 <span class="en">Call Us</span><span class="el">Τηλεφωνήστε μας</span>
+          </button>
+        </div>
+        <div class="form-success" id="formSuccess">
+          ✅ <span class="en">Message sent! We will contact you shortly.</span><span class="el">Το μήνυμα στάλθηκε! Θα επικοινωνήσουμε σύντομα.</span>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+function submitForm(e) {
+  e.preventDefault();
+  if (document.querySelector('.honeypot').value) return;
+  var name = document.getElementById('fname').value;
+  var phone = document.getElementById('fphone').value;
+  var model = document.getElementById('fmodel').value;
+  var msg = document.getElementById('fmsg').value;
+  if (!name || !phone) { alert('Please fill in name and phone.'); return; }
+  var text = 'New inquiry from poweridecyprus.com\n' +
+    'Name: ' + name + '\n' +
+    'Phone: ' + phone + '\n' +
+    (model ? 'Model: ' + model + '\n' : '') +
+    (msg ? 'Message: ' + msg : '');
+  window.open('https://wa.me/35799427117?text=' + encodeURIComponent(text), '_blank');
+  document.getElementById('formSuccess').style.display = 'block';
+  document.getElementById('contactForm').reset();
+}
+function callUs() { window.location.href = 'tel:+35799427117'; }
+</script>
