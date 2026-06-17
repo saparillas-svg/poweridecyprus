@@ -1,0 +1,138 @@
+---
+layout: base
+---
+<style>
+.product-hero{display:grid;grid-template-columns:1fr 1fr;min-height:80vh;align-items:center;background:radial-gradient(ellipse 80% 80% at 60% 50%,#1a0808 0%,#0a0a0a 70%);padding:6rem 4rem 4rem;gap:3rem}
+.main-img-wrap{background:#111;border-radius:6px;overflow:hidden;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;cursor:zoom-in;margin-bottom:1rem}
+.main-img-wrap img{width:100%;height:100%;object-fit:contain;transition:transform 0.3s}
+.main-img-wrap:hover img{transform:scale(1.03)}
+.thumb-row{display:flex;gap:0.7rem;flex-wrap:wrap}
+.thumb{background:#111;border-radius:4px;overflow:hidden;width:80px;height:80px;cursor:pointer;border:2px solid transparent;transition:border-color 0.2s;flex-shrink:0}
+.thumb:hover,.thumb.active{border-color:var(--red)}
+.thumb img{width:100%;height:100%;object-fit:contain}
+.product-badge{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;padding:0.3rem 0.8rem;border-radius:2px;margin-bottom:1rem}
+.badge-available{background:var(--red);color:white}
+.badge-order{background:var(--accent);color:#111}
+.product-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,5rem);letter-spacing:0.04em;line-height:0.95;margin-bottom:0.5rem}
+.product-tag{font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:2rem}
+.product-price{font-family:'Bebas Neue',sans-serif;font-size:3.5rem;line-height:1;margin-bottom:0.3rem}
+.product-price span{color:var(--red);font-size:2rem}
+.price-note{font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:2rem}
+.product-actions{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2rem}
+.quick-specs{display:grid;grid-template-columns:repeat(2,1fr);gap:0.8rem;border-top:1px solid #222;padding-top:1.5rem}
+.qs{display:flex;flex-direction:column}
+.qs-val{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--white);line-height:1}
+.qs-val span{color:var(--red);font-size:1rem}
+.qs-key{font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted)}
+.specs-section{max-width:1100px;margin:0 auto;padding:5rem 2rem}
+.specs-table{width:100%;border-collapse:collapse;margin-top:2rem}
+.specs-table tr{border-bottom:1px solid #1a1a1a}
+.specs-table tr:hover{background:#111}
+.specs-table td{padding:0.9rem 1.2rem;font-size:0.95rem}
+.specs-table td:first-child{color:var(--muted);font-family:'Barlow Condensed',sans-serif;letter-spacing:0.1em;text-transform:uppercase;width:40%}
+.lightbox{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.95);align-items:center;justify-content:center;cursor:zoom-out}
+.lightbox.open{display:flex}
+.lightbox img{max-width:95vw;max-height:95vh;object-fit:contain;border-radius:4px}
+.lb-close{position:absolute;top:1rem;right:1rem;background:rgba(255,255,255,0.1);border:none;color:white;width:44px;height:44px;border-radius:50%;font-size:1.5rem;cursor:pointer}
+@media(max-width:900px){.product-hero{grid-template-columns:1fr;padding:5rem 1.5rem 3rem;min-height:auto}.specs-section{padding:3rem 1.5rem}}
+</style>
+
+{% assign badge_class = "badge-available" %}
+{% assign badge_text = "✅ In Stock" %}
+{% if availability == "Order Only" %}
+  {% assign badge_class = "badge-order" %}
+  {% assign badge_text = "📦 Order Only" %}
+{% elsif availability == "Out of Stock" %}
+  {% assign badge_class = "badge-order" %}
+  {% assign badge_text = "❌ Out of Stock" %}
+{% endif %}
+
+<div class="product-hero">
+  <div class="product-gallery">
+    <div class="main-img-wrap">
+      <img id="mainProductImg" src="{{ main_image }}" alt="{{ title }}"/>
+    </div>
+    <div class="thumb-row">
+      <div class="thumb active" onclick="switchImg('{{ main_image }}', this)">
+        <img src="{{ main_image }}" alt="{{ title }}"/>
+      </div>
+      {% for img in gallery %}
+      <div class="thumb" onclick="switchImg('{{ img }}', this)">
+        <img src="{{ img }}" alt="{{ title }}"/>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="product-info">
+    <div class="product-badge {{ badge_class }}">{{ badge_text }}</div>
+    <div class="product-name">{{ title }}</div>
+    <div class="product-tag">{{ tagline }}</div>
+    <div class="product-price"><span>€</span>{{ price }}</div>
+    <div class="price-note">{{ price_note }}</div>
+    <div class="product-actions">
+      <button class="btn-primary" onclick="orderWA('{{ title }}', '€{{ price }}')">
+        💬 Order via WhatsApp
+      </button>
+      <a href="tel:+35799427117" class="btn-outline">📞 +357 99 427 117</a>
+    </div>
+    {% if quick_specs %}
+    <div class="quick-specs">
+      {% for qs in quick_specs %}
+      <div class="qs">
+        <div class="qs-val">{{ qs.value }}<span>{{ qs.unit }}</span></div>
+        <div class="qs-key">{{ qs.label }}</div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<div class="specs-section">
+  {% if specs %}
+  <div class="section-label">Full Specifications</div>
+  <div class="section-title" style="margin-bottom:2rem;">TECH SPECS</div>
+  <table class="specs-table">
+    <tbody>
+      {% for spec in specs %}
+      <tr><td>{{ spec.key_en }}</td><td>{{ spec.value }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+
+  {% if description_en %}
+  <div style="margin-top:3rem;color:var(--muted);line-height:1.8;">{{ description_en }}</div>
+  {% endif %}
+
+  <div style="background:var(--gray);border:1px solid #222;border-radius:4px;padding:3rem;text-align:center;margin-top:4rem;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;margin-bottom:1rem;">INTERESTED? GET IN TOUCH!</div>
+    <p style="color:var(--muted);margin-bottom:2rem;">Free delivery across Cyprus · 1-year warranty · Based in Limassol</p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+      <button class="btn-primary" onclick="orderWA('{{ title }}', '€{{ price }}')">💬 WhatsApp</button>
+      <a href="/contact/" class="btn-outline">Contact Form</a>
+    </div>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox" onclick="closeLb()">
+  <button class="lb-close">✕</button>
+  <img id="lb-img" src="" alt=""/>
+</div>
+
+<script>
+function switchImg(src, el) {
+  document.getElementById('mainProductImg').src = src;
+  document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+document.getElementById('mainProductImg').addEventListener('click', function() {
+  document.getElementById('lb-img').src = this.src;
+  document.getElementById('lightbox').classList.add('open');
+});
+function closeLb() { document.getElementById('lightbox').classList.remove('open'); }
+function orderWA(model, price) {
+  var text = 'Hi! I am interested in the ' + model + ' (' + price + ') from poweridecyprus.com';
+  window.open('https://wa.me/35799427117?text=' + encodeURIComponent(text), '_blank');
+}
+</script>

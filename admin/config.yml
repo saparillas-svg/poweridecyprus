@@ -12,38 +12,34 @@ collections:
     create: true
     slug: "{{slug}}"
     fields:
+      - {label: "Layout", name: "layout", widget: "hidden", default: "product"}
       - {label: "Product Name", name: "title", widget: "string"}
+      - {label: "SEO Description", name: "description", widget: "text"}
+      - {label: "Tagline", name: "tagline", widget: "string"}
       - {label: "Price (€)", name: "price", widget: "string"}
       - {label: "Price Note", name: "price_note", widget: "string", required: false}
-      - {label: "Available", name: "available", widget: "select", options: ["In Stock", "Order Only", "Out of Stock"]}
+      - {label: "Availability", name: "availability", widget: "select", options: ["In Stock", "Order Only", "Out of Stock"]}
+      - {label: "Sort Order", name: "order", widget: "number", default: 9}
+      - {label: "URL Path", name: "permalink", widget: "string", hint: "e.g. /products/my-product/"}
       - {label: "Main Image", name: "main_image", widget: "image"}
       - label: "Gallery Images"
         name: "gallery"
         widget: "list"
-        field: {label: "Image", name: "image", widget: "image"}
-      - label: "Specifications"
+        field: {label: "Image", name: ".", widget: "image"}
+      - label: "Quick Specs (shown on top)"
+        name: "quick_specs"
+        widget: "list"
+        fields:
+          - {label: "Value", name: "value", widget: "string"}
+          - {label: "Unit", name: "unit", widget: "string"}
+          - {label: "Label", name: "label", widget: "string"}
+      - label: "Full Specifications"
         name: "specs"
         widget: "list"
         fields:
-          - {label: "Spec Name (EN)", name: "key_en", widget: "string"}
-          - {label: "Spec Name (GR)", name: "key_el", widget: "string"}
+          - {label: "Spec Name", name: "key_en", widget: "string"}
           - {label: "Value", name: "value", widget: "string"}
-      - {label: "Description (EN)", name: "description_en", widget: "text", required: false}
-      - {label: "Description (GR)", name: "description_el", widget: "text", required: false}
-
-  - name: "reviews"
-    label: "Customer Reviews"
-    folder: "_reviews"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - {label: "Customer Name", name: "name", widget: "string"}
-      - {label: "Location", name: "location", widget: "string", required: false}
-      - {label: "Product", name: "product", widget: "string"}
-      - {label: "Rating", name: "rating", widget: "select", options: ["5", "4", "3"]}
-      - {label: "Review (EN)", name: "review_en", widget: "text"}
-      - {label: "Review (GR)", name: "review_el", widget: "text", required: false}
-      - {label: "Approved", name: "approved", widget: "boolean", default: false}
+      - {label: "Description Text", name: "description_en", widget: "text", required: false}
 
   - name: "settings"
     label: "Site Settings"
