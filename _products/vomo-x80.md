@@ -1,7 +1,7 @@
 ---
 layout: product
 title: "VOMO X80 ULTRA"
-description: "Premium electric vehicle from Poweride Cyprus. Free delivery, 1-year warranty."
+description: "Premium electric fat bike from Poweride Cyprus. Free delivery, 1-year warranty."
 tagline: "The Original Electric Beast"
 price: "1.100"
 price_note: "From €1.100 (1 battery) / €1.400 (2 batteries 18.3Ah)"
@@ -12,6 +12,8 @@ main_image: "/images/uploads/x80-main.jpg"
 gallery:
   - "/images/uploads/x80-2.jpg"
   - "/images/uploads/x80-3.jpg"
+  - "/images/uploads/x80-4.jpg"
+  - "/images/uploads/x80-5.jpg"
 quick_specs:
   - {value: "250", unit: "W", label: "Motor"}
   - {value: "18.2", unit: "Ah", label: "Battery"}
