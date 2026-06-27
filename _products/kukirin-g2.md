@@ -5,7 +5,7 @@ description: Premium electric scooter from Poweride Cyprus. Free delivery, 1-yea
 tagline: The Urban Commuter
 price: "599"
 price_note: Free delivery across Cyprus
-availability: Out of Stock
+availability: In Stock
 order: 2
 permalink: /products/kukirin-g2/
 main_image: /images/uploads/g2-main.jpg
