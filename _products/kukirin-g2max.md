@@ -6,7 +6,7 @@ description: Premium long-range electric scooter from Poweride Cyprus. Free
 tagline: Maximum Range & Power
 price: "849"
 price_note: Free delivery across Cyprus
-availability: Order Only
+availability: Out of Stock
 order: 4
 permalink: /products/kukirin-g2max/
 main_image: /images/uploads/g2max-main.jpg
