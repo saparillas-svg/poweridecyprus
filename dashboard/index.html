@@ -5,654 +5,337 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Poweride Cyprus — Dashboard</title>
 <style>
-  :root {
-    --bg: #0f1117;
-    --surface: #1a1d27;
-    --surface2: #22263a;
-    --border: #2e3248;
-    --accent: #00c896;
-    --accent2: #0099ff;
-    --danger: #ff4d6a;
-    --warning: #ffb547;
-    --text: #f0f2ff;
-    --muted: #8890b0;
-    --font: 'Inter', system-ui, sans-serif;
-    --radius: 10px;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 14px; min-height: 100vh; }
-
-  /* LOGIN */
-  #login-screen {
-    display: flex; align-items: center; justify-content: center;
-    min-height: 100vh; background: var(--bg);
-  }
-  .login-box {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 16px; padding: 2.5rem 2rem; width: 340px; text-align: center;
-  }
-  .login-box .logo { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 6px; }
-  .login-box .logo span { color: var(--accent); }
-  .login-box p { color: var(--muted); font-size: 13px; margin-bottom: 1.75rem; }
-  .login-box input {
-    width: 100%; background: var(--bg); border: 1px solid var(--border);
-    color: var(--text); border-radius: var(--radius); padding: 10px 14px;
-    font-size: 14px; margin-bottom: 10px; outline: none;
-  }
-  .login-box input:focus { border-color: var(--accent); }
-  .login-box button {
-    width: 100%; background: var(--accent); color: #000; border: none;
-    border-radius: var(--radius); padding: 11px; font-size: 14px;
-    font-weight: 600; cursor: pointer; margin-top: 4px;
-  }
-  .login-box button:hover { opacity: 0.9; }
-  #login-error { color: var(--danger); font-size: 12px; margin-top: 8px; display: none; }
-
-  /* LAYOUT */
-  #app { display: none; flex-direction: column; min-height: 100vh; }
-  header {
-    background: var(--surface); border-bottom: 1px solid var(--border);
-    padding: 0 1.5rem; height: 54px; display: flex; align-items: center;
-    justify-content: space-between; position: sticky; top: 0; z-index: 100;
-  }
-  .header-logo { font-size: 16px; font-weight: 700; letter-spacing: -0.3px; }
-  .header-logo span { color: var(--accent); }
-  .header-right { display: flex; align-items: center; gap: 12px; }
-  .logout-btn {
-    background: transparent; border: 1px solid var(--border); color: var(--muted);
-    border-radius: 8px; padding: 5px 12px; font-size: 12px; cursor: pointer;
-  }
-  .logout-btn:hover { border-color: var(--danger); color: var(--danger); }
-
-  nav {
-    background: var(--surface); border-bottom: 1px solid var(--border);
-    display: flex; overflow-x: auto; padding: 0 1rem;
-  }
-  nav button {
-    background: transparent; border: none; color: var(--muted);
-    padding: 12px 16px; font-size: 13px; font-weight: 500; cursor: pointer;
-    border-bottom: 2px solid transparent; white-space: nowrap; transition: all .15s;
-  }
-  nav button.active { color: var(--accent); border-bottom-color: var(--accent); }
-  nav button:hover:not(.active) { color: var(--text); }
-
-  main { padding: 1.5rem; max-width: 1100px; width: 100%; margin: 0 auto; flex: 1; }
-
-  /* CARDS */
-  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 1.5rem; }
-  .stat-card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 1rem 1.25rem;
-  }
-  .stat-card .label { color: var(--muted); font-size: 12px; margin-bottom: 6px; }
-  .stat-card .value { font-size: 26px; font-weight: 700; letter-spacing: -1px; }
-  .stat-card .value.green { color: var(--accent); }
-  .stat-card .value.blue { color: var(--accent2); }
-  .stat-card .value.red { color: var(--danger); }
-
-  /* TABLE */
-  .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 1.5rem; }
-  .table-header { padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
-  .table-header h3 { font-size: 14px; font-weight: 600; }
-  table { width: 100%; border-collapse: collapse; }
-  th { text-align: left; padding: 10px 14px; color: var(--muted); font-size: 12px; font-weight: 500; border-bottom: 1px solid var(--border); }
-  td { padding: 10px 14px; border-bottom: 1px solid var(--border); font-size: 13px; }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: var(--surface2); }
-
-  /* BADGES */
-  .badge {
-    display: inline-block; padding: 2px 8px; border-radius: 20px;
-    font-size: 11px; font-weight: 600;
-  }
-  .badge.green { background: rgba(0,200,150,.15); color: var(--accent); }
-  .badge.red { background: rgba(255,77,106,.15); color: var(--danger); }
-  .badge.yellow { background: rgba(255,181,71,.15); color: var(--warning); }
-  .badge.blue { background: rgba(0,153,255,.15); color: var(--accent2); }
-
-  /* BUTTONS */
-  .btn {
-    border: none; border-radius: 8px; padding: 7px 14px;
-    font-size: 13px; font-weight: 500; cursor: pointer; transition: opacity .15s;
-  }
-  .btn:hover { opacity: .85; }
-  .btn-primary { background: var(--accent); color: #000; }
-  .btn-danger { background: rgba(255,77,106,.15); color: var(--danger); border: 1px solid rgba(255,77,106,.3); }
-  .btn-ghost { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
-  .btn-sm { padding: 4px 10px; font-size: 12px; }
-
-  /* FORM */
-  .form-box {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 1.25rem;
-  }
-  .form-box h3 { font-size: 14px; font-weight: 600; margin-bottom: 1rem; }
-  .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; }
-  .form-grid input, .form-grid select, .form-grid textarea {
-    background: var(--bg); border: 1px solid var(--border); color: var(--text);
-    border-radius: 8px; padding: 9px 12px; font-size: 13px; width: 100%; outline: none;
-    font-family: var(--font);
-  }
-  .form-grid input:focus, .form-grid select:focus { border-color: var(--accent); }
-  .form-grid select option { background: var(--surface); }
-  .form-actions { margin-top: 12px; display: flex; gap: 8px; }
-
-  .section-gap { margin-bottom: 1.5rem; }
-  .empty { padding: 2rem; text-align: center; color: var(--muted); }
-  .alert { padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 1rem; }
-  .alert.danger { background: rgba(255,77,106,.1); color: var(--danger); border: 1px solid rgba(255,77,106,.3); }
-
-  .loading { text-align: center; color: var(--muted); padding: 2rem; }
+  :root { --bg:#0f1117;--surface:#1a1d27;--surface2:#22263a;--border:#2e3248;--accent:#00c896;--accent2:#0099ff;--danger:#ff4d6a;--warning:#ffb547;--text:#f0f2ff;--muted:#8890b0;--font:'Inter',system-ui,sans-serif;--radius:10px; }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;min-height:100vh;}
+  #login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;}
+  .login-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2.5rem 2rem;width:340px;text-align:center;}
+  .login-box .logo{font-size:22px;font-weight:700;margin-bottom:6px;}
+  .login-box .logo span{color:var(--accent);}
+  .login-box p{color:var(--muted);font-size:13px;margin-bottom:1.75rem;}
+  .login-box input{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);padding:10px 14px;font-size:14px;margin-bottom:10px;outline:none;}
+  .login-box input:focus{border-color:var(--accent);}
+  .login-box button{width:100%;background:var(--accent);color:#000;border:none;border-radius:var(--radius);padding:11px;font-size:14px;font-weight:600;cursor:pointer;}
+  #login-error{color:var(--danger);font-size:12px;margin-top:8px;display:none;}
+  #app{display:none;flex-direction:column;min-height:100vh;}
+  header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.5rem;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .header-logo{font-size:16px;font-weight:700;} .header-logo span{color:var(--accent);}
+  .logout-btn{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:5px 12px;font-size:12px;cursor:pointer;}
+  nav{background:var(--surface);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;padding:0 1rem;}
+  nav button{background:transparent;border:none;color:var(--muted);padding:12px 16px;font-size:13px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;}
+  nav button.active{color:var(--accent);border-bottom-color:var(--accent);}
+  main{padding:1.5rem;max-width:1100px;width:100%;margin:0 auto;flex:1;}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:1.5rem;}
+  .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.25rem;}
+  .stat-card .label{color:var(--muted);font-size:12px;margin-bottom:6px;}
+  .stat-card .value{font-size:26px;font-weight:700;}
+  .green{color:var(--accent);} .blue{color:var(--accent2);} .red{color:var(--danger);}
+  .table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:1.5rem;}
+  .table-header{padding:1rem 1.25rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);}
+  .table-header h3{font-size:14px;font-weight:600;}
+  table{width:100%;border-collapse:collapse;}
+  th{text-align:left;padding:10px 14px;color:var(--muted);font-size:12px;font-weight:500;border-bottom:1px solid var(--border);}
+  td{padding:10px 14px;border-bottom:1px solid var(--border);font-size:13px;}
+  tr:last-child td{border-bottom:none;} tr:hover td{background:var(--surface2);}
+  .badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;}
+  .badge.green{background:rgba(0,200,150,.15);color:var(--accent);}
+  .badge.red{background:rgba(255,77,106,.15);color:var(--danger);}
+  .badge.yellow{background:rgba(255,181,71,.15);color:var(--warning);}
+  .badge.blue{background:rgba(0,153,255,.15);color:var(--accent2);}
+  .btn{border:none;border-radius:8px;padding:7px 14px;font-size:13px;font-weight:500;cursor:pointer;}
+  .btn-primary{background:var(--accent);color:#000;}
+  .btn-danger{background:rgba(255,77,106,.15);color:var(--danger);border:1px solid rgba(255,77,106,.3);}
+  .btn-ghost{background:var(--surface2);color:var(--text);border:1px solid var(--border);}
+  .btn-sm{padding:4px 10px;font-size:12px;}
+  .form-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;}
+  .form-box h3{font-size:14px;font-weight:600;margin-bottom:1rem;}
+  .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;}
+  .form-grid input,.form-grid select{background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:9px 12px;font-size:13px;width:100%;outline:none;font-family:var(--font);}
+  .form-grid input:focus,.form-grid select:focus{border-color:var(--accent);}
+  .form-grid select option{background:var(--surface);}
+  .form-actions{margin-top:12px;display:flex;gap:8px;}
+  .section-gap{margin-bottom:1.5rem;}
+  .empty{padding:2rem;text-align:center;color:var(--muted);}
+  .alert{padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:1rem;}
+  .alert.danger{background:rgba(255,77,106,.1);color:var(--danger);border:1px solid rgba(255,77,106,.3);}
+  .loading{text-align:center;color:var(--muted);padding:2rem;}
 </style>
 </head>
 <body>
-
-<!-- LOGIN -->
 <div id="login-screen">
   <div class="login-box">
     <div class="logo">Poweride<span>CY</span></div>
     <p>Dashboard διαχείρισης</p>
-    <input type="text" id="login-user" placeholder="Username" autocomplete="off" />
-    <input type="password" id="login-pass" placeholder="Password" autocomplete="off" />
-    <button onclick="doLogin()">Είσοδος</button>
+    <input type="text" id="lu" placeholder="Username" />
+    <input type="password" id="lp" placeholder="Password" />
+    <button id="login-btn">Είσοδος</button>
     <div id="login-error">Λάθος username ή password</div>
   </div>
 </div>
-
-<!-- APP -->
 <div id="app">
   <header>
     <div class="header-logo">Poweride<span>CY</span> Dashboard</div>
-    <div class="header-right">
+    <div style="display:flex;align-items:center;gap:12px;">
       <span style="color:var(--muted);font-size:12px;">andreass1978</span>
-      <button class="logout-btn" onclick="doLogout()">Αποσύνδεση</button>
+      <button class="logout-btn" id="logout-btn">Αποσύνδεση</button>
     </div>
   </header>
-  <nav>
-    <button class="active" onclick="showTab('overview',this)">📊 Επισκόπηση</button>
-    <button onclick="showTab('products',this)">📦 Προϊόντα</button>
-    <button onclick="showTab('customers',this)">👥 Πελάτες</button>
-    <button onclick="showTab('suppliers',this)">🚚 Προμηθευτές</button>
-    <button onclick="showTab('orders',this)">🧾 Παραγγελίες</button>
-    <button onclick="showTab('stock',this)">📋 Απόθεμα</button>
+  <nav id="main-nav">
+    <button data-tab="overview" class="active">📊 Επισκόπηση</button>
+    <button data-tab="products">📦 Προϊόντα</button>
+    <button data-tab="customers">👥 Πελάτες</button>
+    <button data-tab="suppliers">🚚 Προμηθευτές</button>
+    <button data-tab="orders">🧾 Παραγγελίες</button>
+    <button data-tab="stock">📋 Απόθεμα</button>
   </nav>
-  <main id="main-content">
-    <div class="loading">Φόρτωση...</div>
-  </main>
+  <main id="mc"><div class="loading">Φόρτωση...</div></main>
 </div>
-
 <script>
-const SUPABASE_URL = 'https://yzecxqttwrrwgzfatyqh.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6ZWN4cXR0d3Jyd2d6ZmF0eXFoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMxMjEzMjgsImV4cCI6MjA5ODY5NzMyOH0.WYIbfQ4iSgxvvDKn7Q1juQYsG2EAdsTSVWqFVWLY2hM';
-const USERNAME = 'andreass1978';
-const PASSWORD = 'and2200A';
+var SB = 'https://yzecxqttwrrwgzfatyqh.supabase.co/rest/v1/';
+var KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6ZWN4cXR0d3Jyd2d6ZmF0eXFoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMxMjEzMjgsImV4cCI6MjA5ODY5NzMyOH0.WYIbfQ4iSgxvvDKn7Q1juQYsG2EAdsTSVWqFVWLY2hM';
+var U='andreass1978', P='and2200A', tab='overview', eid=null;
 
-let currentTab = 'overview';
-let editingId = null;
+function H(x){return{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json','Prefer':x||''};}
+function GET(t,q){return fetch(SB+t+'?'+(q||''),{headers:H()}).then(function(r){return r.json();});}
+function POST(t,b){return fetch(SB+t,{method:'POST',headers:H('return=representation'),body:JSON.stringify(b)}).then(function(r){return r.json();});}
+function PATCH(t,id,b){return fetch(SB+t+'?id=eq.'+id,{method:'PATCH',headers:H('return=representation'),body:JSON.stringify(b)}).then(function(r){return r.json();});}
+function DEL(t,id){return fetch(SB+t+'?id=eq.'+id,{method:'DELETE',headers:H()}).then(function(r){return r.status;});}
+function fmt(n){return Number(n||0).toLocaleString('el-GR',{minimumFractionDigits:2,maximumFractionDigits:2})+' \u20ac';}
+function fd(d){return d?new Date(d).toLocaleDateString('el-GR'):'--';}
+function g(id){return document.getElementById(id);}
+function v(id){var e=g(id);return e?e.value:'';}
 
-// ---- AUTH ----
-function doLogin() {
-  const u = document.getElementById('login-user').value;
-  const p = document.getElementById('login-pass').value;
-  if (u === USERNAME && p === PASSWORD) {
-    sessionStorage.setItem('pcy_auth', '1');
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('app').style.display = 'flex';
-    document.getElementById('app').style.flexDirection = 'column';
-    loadTab('overview');
-  } else {
-    document.getElementById('login-error').style.display = 'block';
-  }
-}
-function doLogout() {
-  sessionStorage.removeItem('pcy_auth');
-  location.reload();
-}
-document.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && document.getElementById('login-screen').style.display !== 'none') doLogin();
+document.getElementById('login-btn').addEventListener('click',function(){
+  if(v('lu')===U&&v('lp')===P){sessionStorage.setItem('pcy','1');g('login-screen').style.display='none';g('app').style.cssText='display:flex;flex-direction:column;min-height:100vh;';load(tab);}
+  else{g('login-error').style.display='block';}
 });
-if (sessionStorage.getItem('pcy_auth')) {
-  document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('app').style.display = 'flex';
-  document.getElementById('app').style.flexDirection = 'column';
+document.getElementById('logout-btn').addEventListener('click',function(){sessionStorage.removeItem('pcy');location.reload();});
+document.getElementById('main-nav').addEventListener('click',function(e){
+  var b=e.target.closest('[data-tab]');if(!b)return;
+  document.querySelectorAll('#main-nav button').forEach(function(x){x.classList.remove('active');});
+  b.classList.add('active');tab=b.dataset.tab;eid=null;load(tab);
+});
+if(sessionStorage.getItem('pcy')){g('login-screen').style.display='none';g('app').style.cssText='display:flex;flex-direction:column;min-height:100vh;';}
+
+function load(t){
+  var mc=g('mc');mc.innerHTML='<div class="loading">Φόρτωση...</div>';
+  if(t==='overview')doOverview(mc);
+  else if(t==='products')doProducts(mc);
+  else if(t==='customers')doCustomers(mc);
+  else if(t==='suppliers')doSuppliers(mc);
+  else if(t==='orders')doOrders(mc);
+  else if(t==='stock')doStock(mc);
 }
 
-// ---- SUPABASE API ----
-async function sb(path, opts = {}) {
-  const res = await fetch(SUPABASE_URL + '/rest/v1/' + path, {
-    headers: {
-      'apikey': SUPABASE_KEY,
-      'Authorization': 'Bearer ' + SUPABASE_KEY,
-      'Content-Type': 'application/json',
-      'Prefer': opts.prefer || (opts.method === 'POST' ? 'return=representation' : ''),
-      ...opts.headers
-    },
-    ...opts
+function doOverview(mc){
+  Promise.all([GET('products','select=*'),GET('customers','select=*'),GET('orders','select=*')]).then(function(r){
+    var P=r[0],C=r[1],O=r[2];
+    var rev=O.filter(function(o){return o.status==='Ολοκληρωμένη';}).reduce(function(s,o){return s+o.qty*o.unit_price;},0);
+    var low=P.filter(function(p){return p.stock<=2;});
+    var rows=O.slice().sort(function(a,b){return new Date(b.date)-new Date(a.date);}).slice(0,8).map(function(o){
+      var pr=P.find(function(p){return p.id===o.product_id;});
+      var bg=o.status==='Ολοκληρωμένη'?'green':o.status==='Ακυρωμένη'?'red':'yellow';
+      return '<tr><td>'+fd(o.date)+'</td><td>'+(pr?pr.name:'—')+'</td><td>'+o.qty+'</td><td>'+fmt(o.qty*o.unit_price)+'</td><td><span class="badge '+bg+'">'+o.status+'</span></td></tr>';
+    }).join('');
+    mc.innerHTML='<div class="stats">'
+      +'<div class="stat-card"><div class="label">Προϊόντα</div><div class="value blue">'+P.length+'</div></div>'
+      +'<div class="stat-card"><div class="label">Πελάτες</div><div class="value">'+C.length+'</div></div>'
+      +'<div class="stat-card"><div class="label">Παραγγελίες</div><div class="value">'+O.length+'</div></div>'
+      +'<div class="stat-card"><div class="label">Έσοδα</div><div class="value green">'+fmt(rev)+'</div></div>'
+      +'<div class="stat-card"><div class="label">Χαμηλό stock</div><div class="value '+(low.length>0?'red':'green')+'">'+low.length+'</div></div>'
+      +'</div>'
+      +(low.length>0?'<div class="alert danger">&#9888; Χαμηλό: '+low.map(function(p){return p.name+' ('+p.stock+')';}).join(', ')+'</div>':'')
+      +'<div class="table-wrap"><div class="table-header"><h3>Τελευταίες παραγγελίες</h3></div>'
+      +'<table><thead><tr><th>Ημ/νία</th><th>Προϊόν</th><th>Ποσ.</th><th>Σύνολο</th><th>Κατάσταση</th></tr></thead>'
+      +'<tbody>'+(rows||'<tr><td colspan="5" class="empty">Δεν υπάρχουν παραγγελίες</td></tr>')+'</tbody></table></div>';
   });
-  if (res.status === 204 || res.status === 205) return null;
-  const data = await res.json();
-  if (!res.ok) throw new Error(JSON.stringify(data));
-  return data;
-}
-const get = (table, qs='') => sb(table + '?' + qs);
-const insert = (table, body) => sb(table, { method: 'POST', body: JSON.stringify(body), prefer: 'return=representation' });
-const update = (table, id, body) => sb(table + '?id=eq.' + id, { method: 'PATCH', body: JSON.stringify(body), headers: { Prefer: 'return=representation' } });
-const del = (table, id) => sb(table + '?id=eq.' + id, { method: 'DELETE' });
-
-function fmt(n) { return Number(n||0).toLocaleString('el-GR',{minimumFractionDigits:2,maximumFractionDigits:2}) + ' €'; }
-function fmtDate(d) { return d ? new Date(d).toLocaleDateString('el-GR') : '—'; }
-
-// ---- TABS ----
-function showTab(tab, btn) {
-  currentTab = tab; editingId = null;
-  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  loadTab(tab);
-}
-async function loadTab(tab) {
-  const el = document.getElementById('main-content');
-  el.innerHTML = '<div class="loading">Φόρτωση...</div>';
-  try {
-    if (tab === 'overview') await renderOverview(el);
-    else if (tab === 'products') await renderProducts(el);
-    else if (tab === 'customers') await renderCustomers(el);
-    else if (tab === 'suppliers') await renderSuppliers(el);
-    else if (tab === 'orders') await renderOrders(el);
-    else if (tab === 'stock') await renderStock(el);
-  } catch(e) {
-    el.innerHTML = `<div class="alert danger">Σφάλμα σύνδεσης με βάση δεδομένων: ${e.message}</div>`;
-  }
 }
 
-// ---- OVERVIEW ----
-async function renderOverview(el) {
-  const [products, customers, orders] = await Promise.all([
-    get('products', 'select=*'),
-    get('customers', 'select=*'),
-    get('orders', 'select=*')
-  ]);
-  const revenue = orders.filter(o => o.status === 'Ολοκληρωμένη').reduce((s,o) => s + o.qty * o.unit_price, 0);
-  const lowStock = products.filter(p => p.stock <= 2);
-  const pending = orders.filter(o => o.status === 'Σε εξέλιξη');
-
-  el.innerHTML = `
-    <div class="stats">
-      <div class="stat-card"><div class="label">Προϊόντα</div><div class="value blue">${products.length}</div></div>
-      <div class="stat-card"><div class="label">Πελάτες</div><div class="value">${customers.length}</div></div>
-      <div class="stat-card"><div class="label">Παραγγελίες</div><div class="value">${orders.length}</div></div>
-      <div class="stat-card"><div class="label">Έσοδα (ολοκλ.)</div><div class="value green">${fmt(revenue)}</div></div>
-      <div class="stat-card"><div class="label">Σε εξέλιξη</div><div class="value blue">${pending.length}</div></div>
-      <div class="stat-card"><div class="label">Χαμηλό stock</div><div class="value ${lowStock.length > 0 ? 'red' : 'green'}">${lowStock.length}</div></div>
-    </div>
-    ${lowStock.length > 0 ? `<div class="alert danger">⚠️ Χαμηλό απόθεμα: ${lowStock.map(p => p.name + ' (' + p.stock + ')').join(', ')}</div>` : ''}
-    <div class="table-wrap">
-      <div class="table-header"><h3>Τελευταίες παραγγελίες</h3></div>
-      <table><thead><tr><th>Ημ/νία</th><th>Προϊόν</th><th>Ποσ.</th><th>Σύνολο</th><th>Κατάσταση</th></tr></thead>
-      <tbody>${
-        [...orders].sort((a,b) => new Date(b.date)-new Date(a.date)).slice(0,8).map(o => {
-          const prod = products.find(p => p.id === o.product_id);
-          const badge = o.status === 'Ολοκληρωμένη' ? 'green' : o.status === 'Ακυρωμένη' ? 'red' : 'yellow';
-          return `<tr><td>${fmtDate(o.date)}</td><td>${prod ? prod.name : '—'}</td><td>${o.qty}</td><td>${fmt(o.qty*o.unit_price)}</td><td><span class="badge ${badge}">${o.status}</span></td></tr>`;
-        }).join('') || '<tr><td colspan="5" class="empty">Δεν υπάρχουν παραγγελίες ακόμα</td></tr>'
-      }</tbody></table>
-    </div>`;
+function doProducts(mc){
+  Promise.all([GET('products','select=*&order=sku'),GET('suppliers','select=id,name')]).then(function(r){
+    var PR=r[0],SP=r[1],ed=eid?PR.find(function(p){return p.id===eid;}):null;
+    var rows=PR.map(function(p){
+      return '<tr><td style="color:var(--muted)">'+p.sku+'</td><td style="font-weight:500">'+p.name+'</td><td>'+(p.category||'—')+'</td><td>'+fmt(p.cost)+'</td><td style="color:var(--accent);font-weight:600">'+fmt(p.price)+'</td>'
+        +'<td><span class="badge '+(p.stock<=2?'red':p.stock<=5?'yellow':'green')+'">'+p.stock+'</span></td>'
+        +'<td style="white-space:nowrap"><button class="btn btn-ghost btn-sm" onclick="sEdit(\'products\',\''+p.id+'\')">Επεξ.</button> <button class="btn btn-danger btn-sm" onclick="doDel(\'products\',\''+p.id+'\')">Διαγρ.</button></td></tr>';
+    }).join('');
+    var so=SP.map(function(s){return '<option value="'+s.id+'"'+(ed&&ed.supplier_id===s.id?' selected':'')+'>'+s.name+'</option>';}).join('');
+    mc.innerHTML='<div class="table-wrap section-gap"><div class="table-header"><h3>Προϊόντα ('+PR.length+')</h3></div>'
+      +'<table><thead><tr><th>SKU</th><th>Όνομα</th><th>Κατηγορία</th><th>Κόστος</th><th>Τιμή</th><th>Stock</th><th></th></tr></thead>'
+      +'<tbody>'+(rows||'<tr><td colspan="7" class="empty">Δεν υπάρχουν</td></tr>')+'</tbody></table></div>'
+      +'<div class="form-box"><h3>'+(ed?'Επεξεργασία: '+ed.name:'Νέο προϊόν')+'</h3><div class="form-grid">'
+      +'<input id="psku" placeholder="SKU" value="'+(ed?ed.sku:'')+'" />'
+      +'<input id="pname" placeholder="Όνομα" value="'+(ed?ed.name:'')+'" />'
+      +'<input id="pcat" placeholder="Κατηγορία" value="'+(ed?ed.category||'':'')+'" />'
+      +'<select id="psup"><option value="">Χωρίς προμηθευτή</option>'+so+'</select>'
+      +'<input id="pcost" type="number" step="0.01" placeholder="Κόστος" value="'+(ed?ed.cost:'')+'" />'
+      +'<input id="pprice" type="number" step="0.01" placeholder="Τιμή" value="'+(ed?ed.price:'')+'" />'
+      +'<input id="pstock" type="number" placeholder="Stock" value="'+(ed?ed.stock:'')+'" /></div>'
+      +'<div class="form-actions"><button class="btn btn-primary" onclick="saveProd()">'+(ed?'Αποθήκευση':'Προσθήκη')+'</button>'
+      +(ed?'<button class="btn btn-ghost" onclick="eid=null;load(\'products\')">Ακύρωση</button>':'')+'</div></div>';
+  });
 }
 
-// ---- PRODUCTS ----
-async function renderProducts(el) {
-  const [products, suppliers] = await Promise.all([
-    get('products', 'select=*,suppliers(name)&order=sku'),
-    get('suppliers', 'select=id,name')
-  ]);
-  const editing = editingId ? products.find(p => p.id === editingId) : null;
-
-  el.innerHTML = `
-    <div class="table-wrap section-gap">
-      <div class="table-header"><h3>Προϊόντα (${products.length})</h3></div>
-      <table><thead><tr><th>SKU</th><th>Όνομα</th><th>Κατηγορία</th><th>Κόστος</th><th>Τιμή</th><th>Stock</th><th></th></tr></thead>
-      <tbody>${products.map(p => `
-        <tr>
-          <td style="color:var(--muted)">${p.sku}</td>
-          <td style="font-weight:500">${p.name}</td>
-          <td>${p.category||'—'}</td>
-          <td>${fmt(p.cost)}</td>
-          <td style="font-weight:600;color:var(--accent)">${fmt(p.price)}</td>
-          <td><span class="badge ${p.stock<=2?'red':p.stock<=5?'yellow':'green'}">${p.stock}</span></td>
-          <td style="white-space:nowrap">
-            <button class="btn btn-ghost btn-sm" onclick="editProduct('${p.id}')">Επεξ.</button>
-            <button class="btn btn-danger btn-sm" onclick="deleteProduct('${p.id}')">Διαγρ.</button>
-          </td>
-        </tr>`).join('') || '<tr><td colspan="7" class="empty">Δεν υπάρχουν προϊόντα</td></tr>'}
-      </tbody></table>
-    </div>
-    <div class="form-box">
-      <h3>${editing ? 'Επεξεργασία: ' + editing.name : 'Νέο προϊόν'}</h3>
-      <div class="form-grid">
-        <input id="pf-sku" placeholder="SKU" value="${editing ? editing.sku : ''}" />
-        <input id="pf-name" placeholder="Όνομα προϊόντος" value="${editing ? editing.name : ''}" />
-        <input id="pf-category" placeholder="Κατηγορία" value="${editing ? editing.category||'' : ''}" />
-        <select id="pf-supplier">
-          <option value="">Χωρίς προμηθευτή</option>
-          ${suppliers.map(s => `<option value="${s.id}" ${editing && editing.supplier_id===s.id?'selected':''}>${s.name}</option>`).join('')}
-        </select>
-        <input id="pf-cost" type="number" step="0.01" placeholder="Κόστος (€)" value="${editing ? editing.cost : ''}" />
-        <input id="pf-price" type="number" step="0.01" placeholder="Τιμή (€)" value="${editing ? editing.price : ''}" />
-        <input id="pf-stock" type="number" placeholder="Απόθεμα" value="${editing ? editing.stock : ''}" />
-      </div>
-      <div class="form-actions">
-        <button class="btn btn-primary" onclick="saveProduct()">${editing ? 'Αποθήκευση' : 'Προσθήκη'}</button>
-        ${editing ? '<button class="btn btn-ghost" onclick="editingId=null;renderProducts(document.getElementById(\'main-content\'))">Ακύρωση</button>' : ''}
-      </div>
-    </div>`;
+function doCustomers(mc){
+  Promise.all([GET('customers','select=*&order=name'),GET('orders','select=customer_id')]).then(function(r){
+    var C=r[0],O=r[1],ed=eid?C.find(function(c){return c.id===eid;}):null;
+    var rows=C.map(function(c){
+      var cnt=O.filter(function(o){return o.customer_id===c.id;}).length;
+      return '<tr><td style="font-weight:500">'+c.name+'</td><td>'+(c.phone||'—')+'</td><td style="color:var(--accent2)">'+(c.email||'—')+'</td><td>'+(c.city||'—')+'</td>'
+        +'<td><span class="badge blue">'+cnt+'</span></td>'
+        +'<td style="white-space:nowrap"><button class="btn btn-ghost btn-sm" onclick="sEdit(\'customers\',\''+c.id+'\')">Επεξ.</button> <button class="btn btn-danger btn-sm" onclick="doDel(\'customers\',\''+c.id+'\')">Διαγρ.</button></td></tr>';
+    }).join('');
+    mc.innerHTML='<div class="table-wrap section-gap"><div class="table-header"><h3>Πελάτες ('+C.length+')</h3></div>'
+      +'<table><thead><tr><th>Όνομα</th><th>Τηλέφωνο</th><th>Email</th><th>Πόλη</th><th>Παραγγελίες</th><th></th></tr></thead>'
+      +'<tbody>'+(rows||'<tr><td colspan="6" class="empty">Δεν υπάρχουν</td></tr>')+'</tbody></table></div>'
+      +'<div class="form-box"><h3>'+(ed?'Επεξεργασία: '+ed.name:'Νέος πελάτης')+'</h3><div class="form-grid">'
+      +'<input id="cname" placeholder="Όνομα" value="'+(ed?ed.name:'')+'" />'
+      +'<input id="cphone" placeholder="Τηλέφωνο" value="'+(ed?ed.phone||'':'')+'" />'
+      +'<input id="cemail" placeholder="Email" value="'+(ed?ed.email||'':'')+'" />'
+      +'<input id="ccity" placeholder="Πόλη" value="'+(ed?ed.city||'':'')+'" />'
+      +'<input id="cnotes" placeholder="Σημειώσεις" value="'+(ed?ed.notes||'':'')+'" style="grid-column:1/-1" /></div>'
+      +'<div class="form-actions"><button class="btn btn-primary" onclick="saveCust()">'+(ed?'Αποθήκευση':'Προσθήκη')+'</button>'
+      +(ed?'<button class="btn btn-ghost" onclick="eid=null;load(\'customers\')">Ακύρωση</button>':'')+'</div></div>';
+  });
 }
-window.editProduct = id => { editingId = id; renderProducts(document.getElementById('main-content')); };
-window.deleteProduct = async id => {
-  if (!confirm('Διαγραφή προϊόντος;')) return;
-  await del('products', id); loadTab('products');
-};
-window.saveProduct = async () => {
-  const body = {
-    sku: document.getElementById('pf-sku').value.trim(),
-    name: document.getElementById('pf-name').value.trim(),
-    category: document.getElementById('pf-category').value.trim(),
-    supplier_id: document.getElementById('pf-supplier').value || null,
-    cost: parseFloat(document.getElementById('pf-cost').value) || 0,
-    price: parseFloat(document.getElementById('pf-price').value) || 0,
-    stock: parseInt(document.getElementById('pf-stock').value) || 0
-  };
-  if (!body.name) return alert('Βάλε όνομα προϊόντος');
-  if (editingId) await update('products', editingId, body);
-  else await insert('products', body);
-  editingId = null; loadTab('products');
-};
 
-// ---- CUSTOMERS ----
-async function renderCustomers(el) {
-  const customers = await get('customers', 'select=*&order=name');
-  const orders = await get('orders', 'select=customer_id');
-  const editing = editingId ? customers.find(c => c.id === editingId) : null;
-  const orderCount = id => orders.filter(o => o.customer_id === id).length;
-
-  el.innerHTML = `
-    <div class="table-wrap section-gap">
-      <div class="table-header"><h3>Πελάτες (${customers.length})</h3></div>
-      <table><thead><tr><th>Όνομα</th><th>Τηλέφωνο</th><th>Email</th><th>Πόλη</th><th>Παραγγελίες</th><th></th></tr></thead>
-      <tbody>${customers.map(c => `
-        <tr>
-          <td style="font-weight:500">${c.name}</td>
-          <td>${c.phone||'—'}</td>
-          <td style="color:var(--accent2)">${c.email||'—'}</td>
-          <td>${c.city||'—'}</td>
-          <td><span class="badge blue">${orderCount(c.id)}</span></td>
-          <td style="white-space:nowrap">
-            <button class="btn btn-ghost btn-sm" onclick="editCustomer('${c.id}')">Επεξ.</button>
-            <button class="btn btn-danger btn-sm" onclick="deleteCustomer('${c.id}')">Διαγρ.</button>
-          </td>
-        </tr>`).join('') || '<tr><td colspan="6" class="empty">Δεν υπάρχουν πελάτες ακόμα</td></tr>'}
-      </tbody></table>
-    </div>
-    <div class="form-box">
-      <h3>${editing ? 'Επεξεργασία: ' + editing.name : 'Νέος πελάτης'}</h3>
-      <div class="form-grid">
-        <input id="cf-name" placeholder="Όνομα" value="${editing ? editing.name : ''}" />
-        <input id="cf-phone" placeholder="Τηλέφωνο" value="${editing ? editing.phone||'' : ''}" />
-        <input id="cf-email" placeholder="Email" value="${editing ? editing.email||'' : ''}" />
-        <input id="cf-city" placeholder="Πόλη" value="${editing ? editing.city||'' : ''}" />
-        <input id="cf-notes" placeholder="Σημειώσεις" value="${editing ? editing.notes||'' : ''}" style="grid-column:1/-1" />
-      </div>
-      <div class="form-actions">
-        <button class="btn btn-primary" onclick="saveCustomer()">${editing ? 'Αποθήκευση' : 'Προσθήκη'}</button>
-        ${editing ? '<button class="btn btn-ghost" onclick="editingId=null;renderCustomers(document.getElementById(\'main-content\'))">Ακύρωση</button>' : ''}
-      </div>
-    </div>`;
+function doSuppliers(mc){
+  Promise.all([GET('suppliers','select=*&order=name'),GET('products','select=supplier_id')]).then(function(r){
+    var S=r[0],PR=r[1],ed=eid?S.find(function(s){return s.id===eid;}):null;
+    var rows=S.map(function(s){
+      var cnt=PR.filter(function(p){return p.supplier_id===s.id;}).length;
+      return '<tr><td style="font-weight:500">'+s.name+'</td><td>'+(s.contact||'—')+'</td><td>'+(s.phone||'—')+'</td><td>'+(s.country||'—')+'</td>'
+        +'<td><span class="badge blue">'+cnt+'</span></td>'
+        +'<td style="white-space:nowrap"><button class="btn btn-ghost btn-sm" onclick="sEdit(\'suppliers\',\''+s.id+'\')">Επεξ.</button> <button class="btn btn-danger btn-sm" onclick="doDel(\'suppliers\',\''+s.id+'\')">Διαγρ.</button></td></tr>';
+    }).join('');
+    mc.innerHTML='<div class="table-wrap section-gap"><div class="table-header"><h3>Προμηθευτές ('+S.length+')</h3></div>'
+      +'<table><thead><tr><th>Εταιρεία</th><th>Επαφή</th><th>Τηλέφωνο</th><th>Χώρα</th><th>Προϊόντα</th><th></th></tr></thead>'
+      +'<tbody>'+(rows||'<tr><td colspan="6" class="empty">Δεν υπάρχουν</td></tr>')+'</tbody></table></div>'
+      +'<div class="form-box"><h3>'+(ed?'Επεξεργασία: '+ed.name:'Νέος προμηθευτής')+'</h3><div class="form-grid">'
+      +'<input id="sname" placeholder="Εταιρεία" value="'+(ed?ed.name:'')+'" />'
+      +'<input id="scont" placeholder="Επαφή" value="'+(ed?ed.contact||'':'')+'" />'
+      +'<input id="sphone" placeholder="Τηλέφωνο" value="'+(ed?ed.phone||'':'')+'" />'
+      +'<input id="semail" placeholder="Email" value="'+(ed?ed.email||'':'')+'" />'
+      +'<input id="scountry" placeholder="Χώρα" value="'+(ed?ed.country||'':'')+'" />'
+      +'<input id="snotes" placeholder="Σημειώσεις" value="'+(ed?ed.notes||'':'')+'" /></div>'
+      +'<div class="form-actions"><button class="btn btn-primary" onclick="saveSupp()">'+(ed?'Αποθήκευση':'Προσθήκη')+'</button>'
+      +(ed?'<button class="btn btn-ghost" onclick="eid=null;load(\'suppliers\')">Ακύρωση</button>':'')+'</div></div>';
+  });
 }
-window.editCustomer = id => { editingId = id; renderCustomers(document.getElementById('main-content')); };
-window.deleteCustomer = async id => {
-  if (!confirm('Διαγραφή πελάτη;')) return;
-  await del('customers', id); loadTab('customers');
-};
-window.saveCustomer = async () => {
-  const body = {
-    name: document.getElementById('cf-name').value.trim(),
-    phone: document.getElementById('cf-phone').value.trim(),
-    email: document.getElementById('cf-email').value.trim(),
-    city: document.getElementById('cf-city').value.trim(),
-    notes: document.getElementById('cf-notes').value.trim()
-  };
-  if (!body.name) return alert('Βάλε όνομα πελάτη');
-  if (editingId) await update('customers', editingId, body);
-  else await insert('customers', body);
-  editingId = null; loadTab('customers');
-};
 
-// ---- SUPPLIERS ----
-async function renderSuppliers(el) {
-  const suppliers = await get('suppliers', 'select=*&order=name');
-  const products = await get('products', 'select=supplier_id');
-  const editing = editingId ? suppliers.find(s => s.id === editingId) : null;
-  const prodCount = id => products.filter(p => p.supplier_id === id).length;
-
-  el.innerHTML = `
-    <div class="table-wrap section-gap">
-      <div class="table-header"><h3>Προμηθευτές (${suppliers.length})</h3></div>
-      <table><thead><tr><th>Εταιρεία</th><th>Επαφή</th><th>Τηλέφωνο</th><th>Χώρα</th><th>Προϊόντα</th><th></th></tr></thead>
-      <tbody>${suppliers.map(s => `
-        <tr>
-          <td style="font-weight:500">${s.name}</td>
-          <td>${s.contact||'—'}</td>
-          <td>${s.phone||'—'}</td>
-          <td>${s.country||'—'}</td>
-          <td><span class="badge blue">${prodCount(s.id)}</span></td>
-          <td style="white-space:nowrap">
-            <button class="btn btn-ghost btn-sm" onclick="editSupplier('${s.id}')">Επεξ.</button>
-            <button class="btn btn-danger btn-sm" onclick="deleteSupplier('${s.id}')">Διαγρ.</button>
-          </td>
-        </tr>`).join('') || '<tr><td colspan="6" class="empty">Δεν υπάρχουν προμηθευτές ακόμα</td></tr>'}
-      </tbody></table>
-    </div>
-    <div class="form-box">
-      <h3>${editing ? 'Επεξεργασία: ' + editing.name : 'Νέος προμηθευτής'}</h3>
-      <div class="form-grid">
-        <input id="sf-name" placeholder="Όνομα εταιρείας" value="${editing ? editing.name : ''}" />
-        <input id="sf-contact" placeholder="Πρόσωπο επαφής" value="${editing ? editing.contact||'' : ''}" />
-        <input id="sf-phone" placeholder="Τηλέφωνο" value="${editing ? editing.phone||'' : ''}" />
-        <input id="sf-email" placeholder="Email" value="${editing ? editing.email||'' : ''}" />
-        <input id="sf-country" placeholder="Χώρα" value="${editing ? editing.country||'' : ''}" />
-        <input id="sf-notes" placeholder="Σημειώσεις" value="${editing ? editing.notes||'' : ''}" />
-      </div>
-      <div class="form-actions">
-        <button class="btn btn-primary" onclick="saveSupplier()">${editing ? 'Αποθήκευση' : 'Προσθήκη'}</button>
-        ${editing ? '<button class="btn btn-ghost" onclick="editingId=null;renderSuppliers(document.getElementById(\'main-content\'))">Ακύρωση</button>' : ''}
-      </div>
-    </div>`;
+function doOrders(mc){
+  Promise.all([GET('orders','select=*&order=date.desc'),GET('products','select=id,name,price,sku'),GET('customers','select=id,name')]).then(function(r){
+    var O=r[0],PR=r[1],C=r[2],ed=eid?O.find(function(o){return o.id===eid;}):null;
+    var rev=O.filter(function(o){return o.status==='Ολοκληρωμένη';}).reduce(function(s,o){return s+o.qty*o.unit_price;},0);
+    var rows=O.map(function(o){
+      var pr=PR.find(function(p){return p.id===o.product_id;});
+      var cu=C.find(function(c){return c.id===o.customer_id;});
+      var bg=o.status==='Ολοκληρωμένη'?'green':o.status==='Ακυρωμένη'?'red':'yellow';
+      return '<tr><td>'+fd(o.date)+'</td><td>'+(cu?cu.name:'—')+'</td><td>'+(pr?pr.name:'—')+'</td><td>'+o.qty+'</td>'
+        +'<td style="font-weight:600">'+fmt(o.qty*o.unit_price)+'</td>'
+        +'<td><span class="badge '+bg+'">'+o.status+'</span></td>'
+        +'<td style="white-space:nowrap"><button class="btn btn-ghost btn-sm" onclick="sEdit(\'orders\',\''+o.id+'\')">Επεξ.</button> <button class="btn btn-danger btn-sm" onclick="doDel(\'orders\',\''+o.id+'\')">Διαγρ.</button></td></tr>';
+    }).join('');
+    var po=PR.map(function(p){return '<option value="'+p.id+'" data-price="'+p.price+'"'+(ed&&ed.product_id===p.id?' selected':'')+'>'+p.name+' ('+p.sku+')</option>';}).join('');
+    var co=C.map(function(c){return '<option value="'+c.id+'"'+(ed&&ed.customer_id===c.id?' selected':'')+'>'+c.name+'</option>';}).join('');
+    mc.innerHTML='<div class="stats" style="margin-bottom:1.25rem">'
+      +'<div class="stat-card"><div class="label">Σύνολο</div><div class="value">'+O.length+'</div></div>'
+      +'<div class="stat-card"><div class="label">Έσοδα</div><div class="value green">'+fmt(rev)+'</div></div>'
+      +'<div class="stat-card"><div class="label">Σε εξέλιξη</div><div class="value blue">'+O.filter(function(o){return o.status==='Σε εξέλιξη';}).length+'</div></div>'
+      +'</div><div class="table-wrap section-gap"><div class="table-header"><h3>Παραγγελίες ('+O.length+')</h3></div>'
+      +'<table><thead><tr><th>Ημ/νία</th><th>Πελάτης</th><th>Προϊόν</th><th>Ποσ.</th><th>Σύνολο</th><th>Κατάσταση</th><th></th></tr></thead>'
+      +'<tbody>'+(rows||'<tr><td colspan="7" class="empty">Δεν υπάρχουν</td></tr>')+'</tbody></table></div>'
+      +'<div class="form-box"><h3>'+(ed?'Επεξεργασία παραγγελίας':'Νέα παραγγελία')+'</h3><div class="form-grid">'
+      +'<input id="odate" type="date" value="'+(ed?ed.date:new Date().toISOString().slice(0,10))+'" />'
+      +'<select id="ocust"><option value="">Πελάτης (προαιρετικό)</option>'+co+'</select>'
+      +'<select id="oprod" onchange="fprice(this)"><option value="">Επιλέξτε προϊόν</option>'+po+'</select>'
+      +'<input id="oqty" type="number" min="1" placeholder="Ποσότητα" value="'+(ed?ed.qty:1)+'" />'
+      +'<input id="oprice" type="number" step="0.01" placeholder="Τιμή μονάδας" value="'+(ed?ed.unit_price:'')+'" />'
+      +'<select id="ostatus">'
+      +'<option value="Σε εξέλιξη"'+(ed&&ed.status==='Σε εξέλιξη'?' selected':'')+'>Σε εξέλιξη</option>'
+      +'<option value="Ολοκληρωμένη"'+(ed&&ed.status==='Ολοκληρωμένη'?' selected':'')+'>Ολοκληρωμένη</option>'
+      +'<option value="Ακυρωμένη"'+(ed&&ed.status==='Ακυρωμένη'?' selected':'')+'>Ακυρωμένη</option>'
+      +'</select>'
+      +'<input id="onotes" placeholder="Σημειώσεις" value="'+(ed?ed.notes||'':'')+'" style="grid-column:1/-1" /></div>'
+      +'<div class="form-actions"><button class="btn btn-primary" onclick="saveOrd()">'+(ed?'Αποθήκευση':'Προσθήκη')+'</button>'
+      +(ed?'<button class="btn btn-ghost" onclick="eid=null;load(\'orders\')">Ακύρωση</button>':'')+'</div></div>';
+  });
 }
-window.editSupplier = id => { editingId = id; renderSuppliers(document.getElementById('main-content')); };
-window.deleteSupplier = async id => {
-  if (!confirm('Διαγραφή προμηθευτή;')) return;
-  await del('suppliers', id); loadTab('suppliers');
-};
-window.saveSupplier = async () => {
-  const body = {
-    name: document.getElementById('sf-name').value.trim(),
-    contact: document.getElementById('sf-contact').value.trim(),
-    phone: document.getElementById('sf-phone').value.trim(),
-    email: document.getElementById('sf-email').value.trim(),
-    country: document.getElementById('sf-country').value.trim(),
-    notes: document.getElementById('sf-notes').value.trim()
-  };
-  if (!body.name) return alert('Βάλε όνομα εταιρείας');
-  if (editingId) await update('suppliers', editingId, body);
-  else await insert('suppliers', body);
-  editingId = null; loadTab('suppliers');
-};
 
-// ---- ORDERS ----
-async function renderOrders(el) {
-  const [orders, products, customers] = await Promise.all([
-    get('orders', 'select=*&order=date.desc'),
-    get('products', 'select=id,name,price,sku'),
-    get('customers', 'select=id,name')
-  ]);
-  const editing = editingId ? orders.find(o => o.id === editingId) : null;
-  const revenue = orders.filter(o => o.status==='Ολοκληρωμένη').reduce((s,o)=>s+o.qty*o.unit_price,0);
-
-  el.innerHTML = `
-    <div class="stats" style="margin-bottom:1.25rem">
-      <div class="stat-card"><div class="label">Σύνολο παραγγελιών</div><div class="value">${orders.length}</div></div>
-      <div class="stat-card"><div class="label">Συνολικά έσοδα</div><div class="value green">${fmt(revenue)}</div></div>
-      <div class="stat-card"><div class="label">Σε εξέλιξη</div><div class="value blue">${orders.filter(o=>o.status==='Σε εξέλιξη').length}</div></div>
-    </div>
-    <div class="table-wrap section-gap">
-      <div class="table-header"><h3>Παραγγελίες (${orders.length})</h3></div>
-      <table><thead><tr><th>Ημ/νία</th><th>Πελάτης</th><th>Προϊόν</th><th>Ποσ.</th><th>Σύνολο</th><th>Κατάσταση</th><th></th></tr></thead>
-      <tbody>${orders.map(o => {
-        const prod = products.find(p => p.id === o.product_id);
-        const cust = customers.find(c => c.id === o.customer_id);
-        const badge = o.status==='Ολοκληρωμένη'?'green':o.status==='Ακυρωμένη'?'red':'yellow';
-        return `<tr>
-          <td>${fmtDate(o.date)}</td>
-          <td>${cust ? cust.name : '—'}</td>
-          <td>${prod ? prod.name : '—'}</td>
-          <td>${o.qty}</td>
-          <td style="font-weight:600">${fmt(o.qty*o.unit_price)}</td>
-          <td><span class="badge ${badge}">${o.status}</span></td>
-          <td style="white-space:nowrap">
-            <button class="btn btn-ghost btn-sm" onclick="editOrder('${o.id}')">Επεξ.</button>
-            <button class="btn btn-danger btn-sm" onclick="deleteOrder('${o.id}')">Διαγρ.</button>
-          </td>
-        </tr>`;
-      }).join('') || '<tr><td colspan="7" class="empty">Δεν υπάρχουν παραγγελίες ακόμα</td></tr>'}
-      </tbody></table>
-    </div>
-    <div class="form-box">
-      <h3>${editing ? 'Επεξεργασία παραγγελίας' : 'Νέα παραγγελία / πώληση'}</h3>
-      <div class="form-grid">
-        <input id="of-date" type="date" value="${editing ? editing.date : new Date().toISOString().slice(0,10)}" />
-        <select id="of-customer">
-          <option value="">Επιλέξτε πελάτη (προαιρετικό)</option>
-          ${customers.map(c => `<option value="${c.id}" ${editing&&editing.customer_id===c.id?'selected':''}>${c.name}</option>`).join('')}
-        </select>
-        <select id="of-product" onchange="fillPrice(this)">
-          <option value="">Επιλέξτε προϊόν</option>
-          ${products.map(p => `<option value="${p.id}" data-price="${p.price}" ${editing&&editing.product_id===p.id?'selected':''}>${p.name} (${p.sku})</option>`).join('')}
-        </select>
-        <input id="of-qty" type="number" min="1" placeholder="Ποσότητα" value="${editing ? editing.qty : 1}" />
-        <input id="of-price" type="number" step="0.01" placeholder="Τιμή μονάδας (€)" value="${editing ? editing.unit_price : ''}" />
-        <select id="of-status">
-          <option value="Σε εξέλιξη" ${editing&&editing.status==='Σε εξέλιξη'?'selected':''}>Σε εξέλιξη</option>
-          <option value="Ολοκληρωμένη" ${editing&&editing.status==='Ολοκληρωμένη'?'selected':''}>Ολοκληρωμένη</option>
-          <option value="Ακυρωμένη" ${editing&&editing.status==='Ακυρωμένη'?'selected':''}>Ακυρωμένη</option>
-        </select>
-        <input id="of-notes" placeholder="Σημειώσεις" value="${editing ? editing.notes||'' : ''}" style="grid-column:1/-1" />
-      </div>
-      <p style="font-size:12px;color:var(--muted);margin-top:8px">Η επιλογή προϊόντος συμπληρώνει αυτόματα την τιμή. Το stock ενημερώνεται αυτόματα.</p>
-      <div class="form-actions">
-        <button class="btn btn-primary" onclick="saveOrder()">${editing ? 'Αποθήκευση' : 'Προσθήκη'}</button>
-        ${editing ? '<button class="btn btn-ghost" onclick="editingId=null;renderOrders(document.getElementById(\'main-content\'))">Ακύρωση</button>' : ''}
-      </div>
-    </div>`;
+function doStock(mc){
+  Promise.all([GET('products','select=*&order=stock'),GET('orders','select=product_id,qty,status')]).then(function(r){
+    var PR=r[0],O=r[1];
+    var lc=PR.filter(function(p){return p.stock<=2;}).length;
+    var rows=PR.map(function(p){
+      var sold=O.filter(function(o){return o.product_id===p.id&&o.status==='Ολοκληρωμένη';}).reduce(function(s,o){return s+o.qty;},0);
+      var lv=p.stock<=2?['red','Χαμηλό']:p.stock<=5?['yellow','Μέτριο']:['green','Καλό'];
+      return '<tr><td style="font-weight:500">'+p.name+'</td><td style="color:var(--muted)">'+p.sku+'</td>'
+        +'<td style="font-weight:700;font-size:16px">'+p.stock+'</td><td>'+sold+'</td>'
+        +'<td><span class="badge '+lv[0]+'">'+lv[1]+'</span></td><td>'+fmt(p.stock*p.cost)+'</td>'
+        +'<td style="white-space:nowrap">'
+        +'<button class="btn btn-ghost btn-sm" onclick="aStock(\''+p.id+'\','+p.stock+',-1)">-1</button> '
+        +'<button class="btn btn-ghost btn-sm" onclick="aStock(\''+p.id+'\','+p.stock+',1)">+1</button> '
+        +'<button class="btn btn-primary btn-sm" onclick="sStock(\''+p.id+'\','+p.stock+')">Ορισμός</button></td></tr>';
+    }).join('');
+    mc.innerHTML=(lc>0?'<div class="alert danger">&#9888; '+lc+' προϊόντα με χαμηλό απόθεμα</div>':'')
+      +'<div class="table-wrap"><div class="table-header"><h3>Απόθεμα</h3></div>'
+      +'<table><thead><tr><th>Προϊόν</th><th>SKU</th><th>Απόθεμα</th><th>Πωλήθηκαν</th><th>Επίπεδο</th><th>Αξία</th><th>Ρύθμιση</th></tr></thead>'
+      +'<tbody>'+rows+'</tbody></table></div>';
+  });
 }
-window.fillPrice = sel => {
-  const opt = sel.options[sel.selectedIndex];
-  if (opt && opt.dataset.price) document.getElementById('of-price').value = opt.dataset.price;
-};
-window.editOrder = id => { editingId = id; renderOrders(document.getElementById('main-content')); };
-window.deleteOrder = async id => {
-  if (!confirm('Διαγραφή παραγγελίας;')) return;
-  const orders = await get('orders', 'select=*&id=eq.' + id);
-  const o = orders[0];
-  if (o && o.status !== 'Ακυρωμένη') {
-    const prods = await get('products', 'select=id,stock&id=eq.' + o.product_id);
-    if (prods[0]) await update('products', o.product_id, { stock: prods[0].stock + o.qty });
-  }
-  await del('orders', id); loadTab('orders');
-};
-window.saveOrder = async () => {
-  const productId = document.getElementById('of-product').value;
-  if (!productId) return alert('Επίλεξε προϊόν');
-  const qty = parseInt(document.getElementById('of-qty').value) || 1;
-  const status = document.getElementById('of-status').value;
-  const body = {
-    date: document.getElementById('of-date').value,
-    customer_id: document.getElementById('of-customer').value || null,
-    product_id: productId,
-    qty,
-    unit_price: parseFloat(document.getElementById('of-price').value) || 0,
-    status,
-    notes: document.getElementById('of-notes').value.trim()
-  };
-  if (editingId) {
-    const old = await get('orders', 'select=*&id=eq.' + editingId);
-    const o = old[0];
-    if (o.status !== 'Ακυρωμένη') {
-      const prods = await get('products', 'select=id,stock&id=eq.' + o.product_id);
-      if (prods[0]) await update('products', o.product_id, { stock: prods[0].stock + o.qty });
-    }
-    await update('orders', editingId, body);
-    if (status !== 'Ακυρωμένη') {
-      const prods = await get('products', 'select=id,stock&id=eq.' + productId);
-      if (prods[0]) await update('products', productId, { stock: prods[0].stock - qty });
-    }
+
+function fprice(sel){var o=sel.options[sel.selectedIndex];if(o&&o.dataset.price){var f=g('oprice');if(f)f.value=o.dataset.price;}}
+function sEdit(t,id){eid=id;load(t);}
+
+function doDel(t,id){
+  if(!confirm('Διαγραφή;'))return;
+  DEL(t,id).then(function(s){
+    eid=null;load(tab);
+  }).catch(function(e){alert('Σφάλμα: '+e.message);});
+}
+
+function saveProd(){
+  var b={sku:v('psku'),name:v('pname'),category:v('pcat'),supplier_id:v('psup')||null,cost:parseFloat(v('pcost'))||0,price:parseFloat(v('pprice'))||0,stock:parseInt(v('pstock'))||0};
+  if(!b.name){alert('Βάλε όνομα');return;}
+  (eid?PATCH('products',eid,b):POST('products',b)).then(function(){eid=null;load('products');});
+}
+
+function saveCust(){
+  var b={name:v('cname'),phone:v('cphone'),email:v('cemail'),city:v('ccity'),notes:v('cnotes')};
+  if(!b.name){alert('Βάλε όνομα');return;}
+  (eid?PATCH('customers',eid,b):POST('customers',b)).then(function(){eid=null;load('customers');});
+}
+
+function saveSupp(){
+  var b={name:v('sname'),contact:v('scont'),phone:v('sphone'),email:v('semail'),country:v('scountry'),notes:v('snotes')};
+  if(!b.name){alert('Βάλε όνομα');return;}
+  (eid?PATCH('suppliers',eid,b):POST('suppliers',b)).then(function(){eid=null;load('suppliers');});
+}
+
+function saveOrd(){
+  var pid=v('oprod');if(!pid){alert('Επίλεξε προϊόν');return;}
+  var qty=parseInt(v('oqty'))||1,st=v('ostatus');
+  var b={date:v('odate'),customer_id:v('ocust')||null,product_id:pid,qty:qty,unit_price:parseFloat(v('oprice'))||0,status:st,notes:v('onotes')};
+  if(eid){
+    PATCH('orders',eid,b).then(function(){eid=null;load('orders');});
   } else {
-    await insert('orders', body);
-    if (status !== 'Ακυρωμένη') {
-      const prods = await get('products', 'select=id,stock&id=eq.' + productId);
-      if (prods[0]) await update('products', productId, { stock: prods[0].stock - qty });
-    }
+    POST('orders',b).then(function(){
+      if(st!=='Ακυρωμένη'){
+        GET('products','select=id,stock&id=eq.'+pid).then(function(r){if(r[0])PATCH('products',pid,{stock:r[0].stock-qty});});
+      }
+      eid=null;load('orders');
+    });
   }
-  editingId = null; loadTab('orders');
-};
-
-// ---- STOCK ----
-async function renderStock(el) {
-  const [products, orders] = await Promise.all([
-    get('products', 'select=*&order=stock'),
-    get('orders', 'select=product_id,qty,status')
-  ]);
-  const sold = id => orders.filter(o => o.product_id===id && o.status==='Ολοκληρωμένη').reduce((s,o)=>s+o.qty,0);
-  const lowCount = products.filter(p => p.stock <= 2).length;
-
-  el.innerHTML = `
-    ${lowCount > 0 ? `<div class="alert danger">⚠️ ${lowCount} προϊόντα με χαμηλό απόθεμα (≤2 τεμάχια)</div>` : ''}
-    <div class="table-wrap">
-      <div class="table-header"><h3>Απόθεμα ανά προϊόν</h3></div>
-      <table><thead><tr><th>Προϊόν</th><th>SKU</th><th>Απόθεμα</th><th>Πωλήθηκαν</th><th>Επίπεδο</th><th>Αξία αποθ.</th><th>Χειρ. ρύθμιση</th></tr></thead>
-      <tbody>${products.map(p => {
-        const s = sold(p.id);
-        const level = p.stock<=2?['red','Χαμηλό']:p.stock<=5?['yellow','Μέτριο']:['green','Καλό'];
-        return `<tr>
-          <td style="font-weight:500">${p.name}</td>
-          <td style="color:var(--muted)">${p.sku}</td>
-          <td style="font-weight:700;font-size:16px">${p.stock}</td>
-          <td>${s}</td>
-          <td><span class="badge ${level[0]}">${level[1]}</span></td>
-          <td>${fmt(p.stock * p.cost)}</td>
-          <td style="white-space:nowrap">
-            <button class="btn btn-ghost btn-sm" onclick="adjustStock('${p.id}',${p.stock},-1)">−1</button>
-            <button class="btn btn-ghost btn-sm" onclick="adjustStock('${p.id}',${p.stock},1)">+1</button>
-            <button class="btn btn-primary btn-sm" onclick="setStock('${p.id}',${p.stock})">Ορισμός</button>
-          </td>
-        </tr>`;
-      }).join('')}
-      </tbody></table>
-    </div>`;
 }
-window.adjustStock = async (id, current, delta) => {
-  const newStock = Math.max(0, current + delta);
-  await update('products', id, { stock: newStock });
-  loadTab('stock');
-};
-window.setStock = async (id, current) => {
-  const val = prompt('Νέο απόθεμα:', current);
-  if (val === null) return;
-  const n = parseInt(val);
-  if (isNaN(n) || n < 0) return alert('Μη έγκυρος αριθμός');
-  await update('products', id, { stock: n });
-  loadTab('stock');
-};
 
-// Init
-if (sessionStorage.getItem('pcy_auth')) loadTab('overview');
+function aStock(id,cur,d){PATCH('products',id,{stock:Math.max(0,cur+d)}).then(function(){load('stock');});}
+function sStock(id,cur){
+  var v2=prompt('Νέο απόθεμα:',cur);if(v2===null)return;
+  var n=parseInt(v2);if(isNaN(n)||n<0){alert('Μη έγκυρος αριθμός');return;}
+  PATCH('products',id,{stock:n}).then(function(){load('stock');});
+}
+
+if(sessionStorage.getItem('pcy'))load('overview');
 </script>
 </body>
 </html>
