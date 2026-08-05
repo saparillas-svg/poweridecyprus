@@ -3,7 +3,7 @@ layout: product
 title: KUKIRIN G2
 description: Premium electric scooter from Poweride Cyprus. Free delivery, 1-year warranty.
 tagline: The Urban Commuter
-price: "630"
+price: "599"
 price_note: Free delivery across Cyprus
 availability: In Stock
 order: 2
