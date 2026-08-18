@@ -4,7 +4,7 @@ title: KUKIRIN G4
 description: Powerful off-road electric scooter from Poweride Cyprus. Free
   delivery, 1-year warranty.
 tagline: Off-Road Ready Beast
-price: "949"
+price: "999"
 price_note: Free delivery across Cyprus
 availability: Out of Stock
 order: 5
