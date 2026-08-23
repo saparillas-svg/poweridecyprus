@@ -6,7 +6,7 @@ tagline: "Premium - Available on Order"
 price: "1.999"
 price_note: "Available on order · Contact us"
 availability: "Order Only"
-order: 6
+order: 7
 permalink: /products/kukirin-g4max/
 main_image: "/images/uploads/g4max-main.jpg"
 gallery:

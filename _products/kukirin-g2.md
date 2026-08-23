@@ -7,7 +7,7 @@ tagline: The Urban Commuter
 price: "599"
 price_note: Free delivery across Cyprus
 availability: In Stock
-order: 2
+order: 3
 permalink: /products/kukirin-g2/
 main_image: /images/uploads/g2-main.jpg
 gallery:

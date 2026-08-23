@@ -6,7 +6,7 @@ tagline: "The Most Uncompromising Electric Bike"
 price: "1.400"
 price_note: "Από €1.400"
 availability: "In Stock"
-order: 7
+order: 2
 permalink: /products/koolux-x9pro/
 main_image: "/images/uploads/x9pro-main.png"
 gallery:
