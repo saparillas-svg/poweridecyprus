@@ -7,7 +7,7 @@ tagline: Off-Road Ready Beast
 price: "999"
 price_note: Free delivery across Cyprus
 availability: Out of Stock
-order: 5
+order: 4
 permalink: /products/kukirin-g4/
 main_image: /images/uploads/g4-main.jpg
 gallery:

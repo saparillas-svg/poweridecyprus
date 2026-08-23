@@ -7,7 +7,7 @@ tagline: Maximum Range & Power
 price: "849"
 price_note: Free delivery across Cyprus
 availability: Out of Stock
-order: 4
+order: 6
 permalink: /products/kukirin-g2max/
 main_image: /images/uploads/g2max-main.jpg
 gallery:

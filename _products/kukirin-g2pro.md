@@ -7,7 +7,7 @@ tagline: Power & Comfort with Seat
 price: "649"
 price_note: Includes seat · Free delivery
 availability: Out of Stock
-order: 3
+order: 5
 permalink: /products/kukirin-g2pro/
 main_image: /images/uploads/g2pro-main.jpg
 gallery:
