@@ -104,6 +104,8 @@ extraCss: |
     <a href="{{ product.url }}" class="model-card">
       {% if product.data.availability == "Order Only" %}
       <div class="card-badge" style="background:var(--accent);color:#111;">📦 Order Only</div>
+      {% elsif product.data.availability == "Coming Soon" %}
+      <div class="card-badge" style="background:#333;color:white;">🔜 Coming Soon</div>
       {% elsif product.data.availability == "Out of Stock" %}
       <div class="card-badge" style="background:#444;color:white;">❌ Out of Stock</div>
       {% else %}
