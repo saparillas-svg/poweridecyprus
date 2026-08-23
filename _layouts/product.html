@@ -37,21 +37,14 @@ layout: base
 @media(max-width:900px){.product-hero{grid-template-columns:1fr;padding:5rem 1.5rem 3rem;min-height:auto}.specs-section{padding:3rem 1.5rem}}
 </style>
 
-{% assign shop_enabled = false %}
 {% assign badge_class = "badge-available" %}
 {% assign badge_text = "✅ In Stock" %}
-{% assign can_buy = true %}
 {% if availability == "Order Only" %}
   {% assign badge_class = "badge-order" %}
   {% assign badge_text = "📦 Order Only" %}
-{% elsif availability == "Coming Soon" %}
-  {% assign badge_class = "badge-order" %}
-  {% assign badge_text = "🔜 Coming Soon" %}
-  {% assign can_buy = false %}
 {% elsif availability == "Out of Stock" %}
   {% assign badge_class = "badge-order" %}
   {% assign badge_text = "❌ Out of Stock" %}
-  {% assign can_buy = false %}
 {% endif %}
 
 <div class="product-hero">
@@ -76,18 +69,8 @@ layout: base
     <div class="product-tag">{{ tagline }}</div>
     <div class="product-price"><span>€</span>{{ price }}</div>
     <div class="price-note">{{ price_note }}</div>
-    {% if shop_enabled and can_buy %}
     <div class="product-actions">
-      <button class="btn-primary" onclick='buyNow({id:"{{ permalink }}",title:"{{ title }}",price:"{{ price }}",image:"{{ main_image }}"})'>
-        ⚡ Buy Now
-      </button>
-      <button class="btn-outline" onclick='addToCart({id:"{{ permalink }}",title:"{{ title }}",price:"{{ price }}",image:"{{ main_image }}"});showAddedToast("{{ title }}")'>
-        🛒 Add to Cart
-      </button>
-    </div>
-    {% endif %}
-    <div class="product-actions">
-      <button class="btn-outline" onclick="orderWA('{{ title }}', '€{{ price }}')">
+      <button class="btn-primary" onclick="orderWA('{{ title }}', '€{{ price }}')">
         💬 Order via WhatsApp
       </button>
       <a href="tel:+35799427117" class="btn-outline">📞 +357 99 427 117</a>
