@@ -18,7 +18,7 @@ collections:
       - {label: "Tagline", name: "tagline", widget: "string", required: false}
       - {label: "Price (€)", name: "price", widget: "string", required: false}
       - {label: "Price Note", name: "price_note", widget: "string", required: false}
-      - {label: "Availability", name: "availability", widget: "select", options: ["In Stock", "Order Only", "Out of Stock"], required: false}
+      - {label: "Availability", name: "availability", widget: "select", options: ["In Stock", "Order Only", "Coming Soon", "Out of Stock"], required: false}
       - {label: "Sort Order", name: "order", widget: "number", default: 9, required: false}
       - {label: "URL Path", name: "permalink", widget: "string", hint: "e.g. /products/my-product/", required: false}
       - {label: "Main Image", name: "main_image", widget: "image", required: false}
