@@ -6,7 +6,7 @@ description: Powerful off-road electric scooter from Poweride Cyprus. Free
 tagline: Off-Road Ready Beast
 price: "999"
 price_note: Free delivery across Cyprus
-availability: Coming Soon
+availability: In Stock
 order: 4
 permalink: /products/kukirin-g4/
 main_image: /images/uploads/g4-main.jpg
