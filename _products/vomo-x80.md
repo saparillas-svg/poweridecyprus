@@ -5,7 +5,7 @@ description: Premium electric fat bike from Poweride Cyprus. Free delivery, 1-ye
 tagline: The Original Electric Beast
 price: "1.100"
 price_note: From €1.100 (1 battery) / €1.400 (2 batteries 18.3Ah)
-availability: In Stock
+availability: Coming Soon
 order: 1
 permalink: /products/vomo-x80/
 main_image: /images/uploads/x80-main.jpg
