@@ -1,12 +1,12 @@
 ---
 layout: product
-title: KUKIRIN G2
-seo_title: KUKIRIN G2 Cyprus | Electric Scooter | Poweride Cyprus
-description: KUKIRIN G2 electric scooter in Cyprus with powerful 800W motor, up to 45 km/h speed and up to 55 km range. In stock at Poweride Cyprus with free delivery across Cyprus and 1-year warranty.
+description: KUKIRIN G2 electric scooter in Cyprus with powerful 800W motor, up
+  to 45 km/h speed and up to 55 km range. In stock at Poweride Cyprus with free
+  delivery across Cyprus and 1-year warranty.
 tagline: The Urban Commuter
 price: "599"
 price_note: Free delivery across Cyprus
-availability: In Stock
+availability: Coming Soon
 order: 3
 permalink: /products/kukirin-g2/
 main_image: /images/uploads/g2-main.jpg
@@ -28,6 +28,8 @@ quick_specs:
   - value: "120"
     unit: kg
     label: Max Load
+seo_title: KUKIRIN G2 Cyprus | Electric Scooter | Poweride Cyprus
+title: KUKIRIN G2
 specs:
   - key_en: Motor
     value: 800W (1200W peak)
