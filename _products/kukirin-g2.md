@@ -6,7 +6,7 @@ description: KUKIRIN G2 electric scooter in Cyprus with powerful 800W motor, up
 tagline: The Urban Commuter
 price: "599"
 price_note: Free delivery across Cyprus
-availability: Coming Soon
+availability: In Stock
 order: 3
 permalink: /products/kukirin-g2/
 main_image: /images/uploads/g2-main.jpg
